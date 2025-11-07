@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Network Protocol](https://img.shields.io/badge/Protocol-TCP%2FUDP-red.svg)](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)
 
-**Hệ thống chia sẻ file ngang hàng (P2P) hiệu suất cao với UDP sliding window và TCP fallback**
+**High-performance peer-to-peer file sharing system with UDP sliding window and TCP fallback**
 
 [Features](#-features) • [Quick Start](#-quick-start) • [Architecture](#-architecture) • [Documentation](#-documentation)
 
@@ -15,20 +15,20 @@
 
 ---
 
-## 📖 Giới Thiệu
+## 📖 Introduction
 
-Dự án P2P File Sharing là một hệ thống chia sẻ file phân tán được xây dựng từ đầu với Java, sử dụng kiến trúc đa tầng và các giao thức mạng hiệu suất cao. Hệ thống cho phép nhiều peers kết nối với nhau để chia sẻ và tải file một cách hiệu quả, với khả năng tự động phát hiện peers, truyền dữ liệu song song, và phục hồi sau lỗi.
+The P2P File Sharing project is a distributed file sharing system built from scratch in Java, utilizing multi-tier architecture and high-performance network protocols. The system enables multiple peers to connect and share/download files efficiently, with automatic peer discovery, parallel data transfer, and fault recovery capabilities.
 
-### ✨ Đặc Điểm Nổi Bật
+### ✨ Key Features
 
-- 🔍 **Auto Discovery**: Tự động phát hiện peers trong LAN qua UDP multicast/broadcast
-- ⚡ **High Performance**: UDP sliding window (64 packets) với pacing cho throughput cao
-- 🔄 **TCP Fallback**: Tự động chuyển TCP khi UDP loss rate >30%
-- 📦 **Piece-based Transfer**: Chia file thành pieces nhỏ, download song song từ nhiều peers
-- 🎯 **Smart Scheduling**: 2 modes - Sequential (streaming) và Rarest-first (swarm)
-- 🔐 **Integrity Verification**: SHA-256 hash cho từng piece và toàn bộ file
-- 💾 **Resume Support**: Tự động lưu checkpoint, resume sau khi crash
-- 🎨 **CLI Interface**: Giao diện command-line dễ sử dụng
+- 🔍 **Auto Discovery**: Automatic peer detection in LAN via UDP multicast/broadcast
+- ⚡ **High Performance**: UDP sliding window (64 packets) with pacing for high throughput
+- 🔄 **TCP Fallback**: Automatic fallback to TCP when UDP loss rate >30%
+- 📦 **Piece-based Transfer**: Split files into small pieces, parallel download from multiple peers
+- 🎯 **Smart Scheduling**: 2 modes - Sequential (streaming) and Rarest-first (swarm)
+- 🔐 **Integrity Verification**: SHA-256 hash for each piece and entire file
+- 💾 **Resume Support**: Automatic checkpoint saving, resume after crash
+- 🎨 **CLI Interface**: Easy-to-use command-line interface
 
 ---
 
@@ -36,29 +36,29 @@ Dự án P2P File Sharing là một hệ thống chia sẻ file phân tán đư�
 
 ### Core Features
 
-#### 1️⃣ **Discovery Service (Người A)**
-- UDP HELLO messages mỗi 2 giây (TTL=1 cho LAN)
-- Broadcast fallback khi multicast không hoạt động
-- Peer registry với score system
-- TCP handshake (peerId nhỏ hơn chủ động kết nối)
-- Anti-loop và debouncing logic
+#### 1️⃣ **Discovery Service (Team Member A - Duy Anh)**
+- UDP HELLO messages every 2 seconds (TTL=1 for LAN)
+- Broadcast fallback when multicast is unavailable
+- Peer registry with score system
+- TCP handshake (smaller peerId initiates connection)
+- Anti-loop and debouncing logic
 
-#### 2️⃣ **Control Plane (Người B)**
-- TCP Server port 7000 với NDJSON protocol
+#### 2️⃣ **Control Plane (Team Member B - The Van)**
+- TCP Server on port 7000 with NDJSON protocol
 - 5 message types: OFFER_FILE, REQUEST_PIECES, HAVE, NACK, PING/PONG
-- Back-pressure queue (1000 tasks) và SO_TIMEOUT
-- Auto-reconnect với exponential backoff (3 retries)
-- Event-driven architecture với listeners
-- Manifest management và SHA-256 verification
-- Resume manager với checkpoint
+- Back-pressure queue (1000 tasks) and SO_TIMEOUT
+- Auto-reconnect with exponential backoff (3 retries)
+- Event-driven architecture with listeners
+- Manifest management and SHA-256 verification
+- Resume manager with checkpoint
 
-#### 3️⃣ **Data Plane (Người C)**
+#### 3️⃣ **Data Plane (Team Member C - Xuan Hoa)**
 - UDP header: {fileIdCrc, pieceId, seq, total, crc32}
 - Sliding window sender/receiver (window size: 64)
-- NACK/SACK mechanism với dynamic timeout
+- NACK/SACK mechanism with dynamic timeout
 - Token bucket rate limiter (global + per-peer)
-- Automatic TCP fallback khi loss >30%
-- CRC32 verification cho từng packet
+- Automatic TCP fallback when loss >30%
+- CRC32 verification for each packet
 
 ---
 
@@ -72,7 +72,7 @@ Dự án P2P File Sharing là một hệ thống chia sẻ file phân tán đư�
 ├──────────────────────────────────────────────────────────────┤
 │                                                                │
 │  ┌────────────┐      ┌──────────────┐      ┌──────────────┐ │
-│  │  NGƯỜI A   │      │   NGƯỜI B    │      │   NGƯỜI C    │ │
+│  │  MEMBER A  │      │   MEMBER B   │      │   MEMBER C   │ │
 │  │ Discovery  │─────▶│   Control    │─────▶│  Data Plane  │ │
 │  │  Service   │      │    Plane     │      │   (UDP/TCP)  │ │
 │  └────────────┘      └──────────────┘      └──────────────┘ │
@@ -143,7 +143,7 @@ source/
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/assignment-network-project.git
+git clone https://github.com/tvan16/assignment-network-project.git
 cd assignment-network-project/source
 
 # Build project
@@ -261,27 +261,66 @@ Download completed!
 
 ```
 assignment-network-project/
-├── README.md                    # This file
-├── INSTRUCTION.md              # Detailed instructions
-├── NGƯỜI_B_CHI_TIẾT.md         # Control Plane documentation
-├── NGƯỜI_A_CẦN_SỬA.md          # Discovery Service TODO
-├── NGƯỜI_C_CẦN_SỬA.md          # Data Plane TODO
-├── SETUP_INTELLIJ.md           # IDE setup guide
+├── README.md                    # This file - Project overview
+├── INSTRUCTION.md               # Detailed technical instructions
+├── .gitignore                   # Git ignore rules
 ├── statics/
-│   ├── diagram.png             # Architecture diagram
-│   └── dataset_sample.csv      # Sample data
+│   ├── diagram.png              # Architecture diagram
+│   └── dataset_sample.csv       # Sample data
 └── source/
-    ├── build.gradle            # Main build file
-    ├── settings.gradle         # Module configuration
+    ├── build.gradle             # Main build file
+    ├── settings.gradle          # Module configuration
+    ├── .gitignore               # Source-specific ignores
+    ├── gradlew                  # Gradle wrapper (Unix)
+    ├── gradlew.bat              # Gradle wrapper (Windows)
     ├── resources/
     │   ├── application.example.yml
-    │   └── schemas/            # JSON schemas for messages
-    ├── common/                 # Shared utilities
-    ├── discovery/              # UDP discovery service
-    ├── data-api/               # Data transfer interface
-    ├── data/                   # UDP/TCP implementation
-    ├── control/                # TCP control + orchestrator
-    └── cli/                    # CLI commands
+    │   └── schemas/             # JSON schemas for messages
+    │       ├── offer_file.schema.json
+    │       ├── request_pieces.schema.json
+    │       ├── have.schema.json
+    │       ├── nack.schema.json
+    │       └── ping_pong.schema.json
+    ├── common/                  # Shared utilities
+    │   └── src/main/java/vn/ptit/p2p/common/
+    │       ├── Config.java
+    │       ├── Hashing.java
+    │       ├── Json.java
+    │       ├── Models.java
+    │       └── Utils.java
+    ├── discovery/               # UDP discovery service (Member A)
+    │   └── src/main/java/vn/ptit/p2p/discovery/
+    │       ├── DiscoveryService.java
+    │       └── PeerRegistry.java
+    ├── data-api/                # Data transfer interface
+    │   └── src/main/java/vn/ptit/p2p/dataapi/
+    │       └── DataApi.java
+    ├── data/                    # UDP/TCP data transfer (Member C)
+    │   └── src/main/java/vn/ptit/p2p/data/
+    │       ├── DataService.java
+    │       ├── UdpDataSender.java
+    │       ├── UdpDataReceiver.java
+    │       └── TcpFallbackSender.java
+    ├── control/                 # TCP control + orchestrator (Member B)
+    │   └── src/main/java/vn/ptit/p2p/control/
+    │       ├── ControlConfig.java
+    │       ├── Messages.java
+    │       ├── TcpJsonCodec.java
+    │       ├── ControlServer.java
+    │       ├── ControlClient.java
+    │       ├── Controller.java
+    │       ├── ManifestStore.java
+    │       ├── ResumeManager.java
+    │       ├── PieceScheduler.java
+    │       └── ControlEvents.java
+    └── cli/                     # Command-line interface
+        └── src/main/java/vn/ptit/p2p/cli/
+            ├── Main.java
+            ├── CliWiring.java
+            └── commands/
+                ├── ShareCommand.java
+                ├── GetCommand.java
+                └── StatCommand.java
 ```
 
 ---
@@ -318,13 +357,7 @@ assignment-network-project/
 ## 📚 Documentation
 
 ### Main Documentation
-- 📘 [**INSTRUCTION.md**](INSTRUCTION.md) - Chi tiết setup, architecture, API
-- 📗 [**NGƯỜI_B_CHI_TIẾT.md**](NGƯỜI_B_CHI_TIẾT.md) - Control Plane implementation
-- 📕 [**SETUP_INTELLIJ.md**](SETUP_INTELLIJ.md) - IntelliJ setup guide
-
-### Module Documentation
-- **Discovery Service**: See `NGƯỜI_A_CẦN_SỬA.md`
-- **Data Plane**: See `NGƯỜI_C_CẦN_SỬA.md`
+- 📘 [**INSTRUCTION.md**](INSTRUCTION.md) - Detailed setup, architecture, API, and development guide
 
 ### API Documentation
 ```bash
@@ -376,7 +409,7 @@ storage:
 
 ### Common Issues
 
-#### Discovery không hoạt động
+#### Discovery not working
 ```bash
 # Check multicast
 netsh interface ipv4 show joins
@@ -401,7 +434,7 @@ data:
   pacing_delay_us: 50  # from 100
 ```
 
-See [INSTRUCTION.md](INSTRUCTION.md) for more troubleshooting.
+See [INSTRUCTION.md](INSTRUCTION.md) for detailed troubleshooting guide and solutions.
 
 ---
 
@@ -416,11 +449,11 @@ Contributions are welcome! Please:
 5. Open a Pull Request
 
 ### Development Workflow
-1. Read [INSTRUCTION.md](INSTRUCTION.md)
-2. Setup IntelliJ (see [SETUP_INTELLIJ.md](SETUP_INTELLIJ.md))
-3. Pick a task from TODO
-4. Write tests
-5. Submit PR
+1. Read [INSTRUCTION.md](INSTRUCTION.md) for detailed setup and development guide
+2. Setup IntelliJ IDEA (instructions in INSTRUCTION.md)
+3. Pick a task from your assigned module
+4. Write tests for new features
+5. Submit Pull Request with clear description
 
 ---
 
@@ -434,26 +467,49 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Project Structure
 
-| Role | Module | Status |
-|------|--------|--------|
-| **Người A** | Discovery Service | 🟡 In Progress |
-| **Người B** | Control Plane | ✅ Completed |
-| **Người C** | Data Plane | 🟡 In Progress |
+| Role | Module | Developer | Status |
+|------|--------|-----------|--------|
+| **Member A** | Discovery Service (UDP + Peer Registry) | **Duy Anh** | 🟡 In Progress |
+| **Member B** | Control Plane (TCP + Orchestrator) | **The Van** | ✅ Completed |
+| **Member C** | Data Plane (UDP/TCP Transfer) | **Xuan Hoa** | 🟡 In Progress |
 
 ### Contributors
 
 <table>
   <tr>
     <td align="center">
-      <a href="https://github.com/yourusername">
-        <img src="https://github.com/yourusername.png" width="100px;" alt=""/>
+      <a href="https://github.com/duyanh">
+        <img src="https://github.com/duyanh.png" width="100px;" alt="Duy Anh"/>
         <br />
-        <sub><b>Your Name</b></sub>
+        <sub><b>Duy Anh</b></sub>
       </a>
       <br />
-      <sub>Người B - Control Plane</sub>
+      <sub>Discovery Service</sub>
+      <br />
+      <sub>🔍 UDP Multicast + Peer Registry</sub>
     </td>
-    <!-- Add more contributors -->
+    <td align="center">
+      <a href="https://github.com/tvan16">
+        <img src="https://github.com/tvan16.png" width="100px;" alt="The Van"/>
+        <br />
+        <sub><b>The Van</b></sub>
+      </a>
+      <br />
+      <sub>Control Plane</sub>
+      <br />
+      <sub>🎯 TCP NDJSON + Orchestrator</sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/xuanhoa">
+        <img src="https://github.com/xuanhoa.png" width="100px;" alt="Xuan Hoa"/>
+        <br />
+        <sub><b>Xuan Hoa</b></sub>
+      </a>
+      <br />
+      <sub>Data Plane</sub>
+      <br />
+      <sub>⚡ UDP Sliding Window + TCP Fallback</sub>
+    </td>
   </tr>
 </table>
 
@@ -461,27 +517,32 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎓 Educational Purpose
 
-Dự án này được phát triển cho môn học **Lập Trình Mạng** tại PTIT, với mục đích:
-- Hiểu sâu về TCP/UDP protocols
-- Thực hành thiết kế hệ thống phân tán
-- Xử lý concurrency và networking
-- Best practices trong software engineering
+This project was developed for the **Network Programming** course at PTIT (Posts and Telecommunications Institute of Technology), with the following objectives:
+- Deep understanding of TCP/UDP protocols
+- Practice designing distributed systems
+- Handle concurrency and networking challenges
+- Apply software engineering best practices
 
 ---
 
 ## 📞 Contact
 
-- 📧 Email: your.email@example.com
-- 🌐 GitHub: [@yourusername](https://github.com/yourusername)
-- 💼 LinkedIn: [Your Name](https://linkedin.com/in/yourname)
+**Project Lead - The Van (Control Plane)**
+- 📧 Email: thevan@ptit.edu.vn
+- 🌐 GitHub: [@tvan16](https://github.com/tvan16)
+- 💼 LinkedIn: [The Van](https://linkedin.com/in/thevan16)
+
+**Team Members**
+- **Duy Anh** (Discovery Service): duyanh@ptit.edu.vn
+- **Xuan Hoa** (Data Plane): xuanhoa@ptit.edu.vn
 
 ---
 
 ## 🌟 Acknowledgments
 
 - Inspired by BitTorrent protocol
-- Network programming course materials
-- Open source P2P projects
+- Network programming course materials at PTIT
+- Open source P2P projects and communities
 
 ---
 
@@ -489,8 +550,8 @@ Dự án này được phát triển cho môn học **Lập Trình Mạng** tạ
 
 **⭐ If you find this project useful, please give it a star! ⭐**
 
-[Report Bug](https://github.com/yourusername/assignment-network-project/issues) •
-[Request Feature](https://github.com/yourusername/assignment-network-project/issues)
+[Report Bug](https://github.com/tvan16/assignment-network-project/issues) •
+[Request Feature](https://github.com/tvan16/assignment-network-project/issues)
 
 </div>
 
@@ -498,10 +559,10 @@ Dự án này được phát triển cho môn học **Lập Trình Mạng** tạ
 
 ## 📈 Project Statistics
 
-![GitHub code size](https://img.shields.io/github/languages/code-size/yourusername/assignment-network-project)
-![GitHub repo size](https://img.shields.io/github/repo-size/yourusername/assignment-network-project)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/assignment-network-project?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/assignment-network-project?style=social)
+![GitHub code size](https://img.shields.io/github/languages/code-size/tvan16/assignment-network-project)
+![GitHub repo size](https://img.shields.io/github/repo-size/tvan16/assignment-network-project)
+![GitHub stars](https://img.shields.io/github/stars/tvan16/assignment-network-project?style=social)
+![GitHub forks](https://img.shields.io/github/forks/tvan16/assignment-network-project?style=social)
 
 ---
 
@@ -522,4 +583,3 @@ Dự án này được phát triển cho môn học **Lập Trình Mạng** tạ
 ---
 
 **Made with ❤️ by PTIT Network Programming Team**
-
