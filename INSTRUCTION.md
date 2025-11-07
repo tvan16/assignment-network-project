@@ -1,6 +1,6 @@
 # 📚 P2P File Sharing System - Detailed Instructions
 
-> Hướng dẫn chi tiết cho developers muốn hiểu, chạy, và contribute vào dự án.
+> Comprehensive guide for developers who want to understand, run, and contribute to the project.
 
 ---
 
@@ -24,30 +24,30 @@
 
 ### 1.1 Project Overview
 
-P2P File Sharing System là một hệ thống chia sẻ file ngang hàng (peer-to-peer) được xây dựng hoàn toàn bằng Java, sử dụng socket programming thuần túy (không dùng framework P2P có sẵn). Hệ thống được thiết kế theo kiến trúc module hóa với 3 thành phần chính:
+The P2P File Sharing System is a peer-to-peer file sharing system built entirely in Java using pure socket programming (without any existing P2P frameworks). The system is designed with a modular architecture consisting of 3 main components:
 
-- **Người A (Discovery)**: Phát hiện peers trong mạng LAN
-- **Người B (Control)**: Điều phối và quản lý việc truyền file
-- **Người C (Data)**: Thực hiện truyền dữ liệu tốc độ cao
+- **Member A (Discovery)**: Detect peers in the LAN network
+- **Member B (Control)**: Coordinate and manage file transfers
+- **Member C (Data)**: Perform high-speed data transmission
 
 ### 1.2 Key Features
 
 #### Performance
-- **Throughput**: ~80 MB/s trên LAN 1GbE với UDP
-- **Discovery Time**: ≤ 3 seconds trong LAN
-- **Resume**: Instant resume với 0% overhead
-- **Concurrent**: Download từ nhiều peers đồng thời
+- **Throughput**: ~80 MB/s on 1GbE LAN with UDP
+- **Discovery Time**: ≤ 3 seconds in LAN
+- **Resume**: Instant resume with 0% overhead
+- **Concurrent**: Download from multiple peers simultaneously
 
 #### Reliability
-- **Loss Tolerance**: Hoạt động tốt với packet loss lên đến 30%
-- **Auto Recovery**: Tự động retransmit hoặc fallback TCP
-- **Integrity**: SHA-256 verification cho từng piece và toàn file
+- **Loss Tolerance**: Works well with packet loss up to 30%
+- **Auto Recovery**: Automatic retransmit or TCP fallback
+- **Integrity**: SHA-256 verification for each piece and entire file
 - **Checkpoint**: Automatic save/restore state
 
 #### Scalability
-- **Multi-peer**: Hỗ trợ nhiều peers (tested lên đến 10)
-- **Large Files**: Xử lý file lên đến vài GB
-- **Rate Control**: Token bucket per-peer và global
+- **Multi-peer**: Support multiple peers (tested up to 10)
+- **Large Files**: Handle files up to several GB
+- **Rate Control**: Token bucket per-peer and global
 
 ---
 
@@ -147,7 +147,7 @@ Main Thread
 
 #### Step 1: Clone Repository
 ```bash
-git clone https://github.com/yourusername/assignment-network-project.git
+git clone https://github.com/tvan16/assignment-network-project.git
 cd assignment-network-project
 ```
 
@@ -204,9 +204,7 @@ Shared Files: 0
 
 ### 3.3 IntelliJ Setup
 
-See dedicated guide: [SETUP_INTELLIJ.md](SETUP_INTELLIJ.md)
-
-Quick steps:
+**Quick steps:**
 1. `File` → `Open` → Select `source/` directory
 2. Wait for Gradle import (~2 minutes)
 3. `Run` → `Edit Configurations` → Add Application
@@ -219,7 +217,7 @@ Quick steps:
 
 ### 4.1 Common Module
 
-**Purpose**: Shared utilities và models cho tất cả modules
+**Purpose**: Shared utilities and models for all modules
 
 **Key Classes:**
 
@@ -280,7 +278,7 @@ String ip = Utils.getLocalHostAddress();
 
 ### 4.2 Discovery Module
 
-**Purpose**: Phát hiện peers trong LAN và khởi tạo TCP connections
+**Purpose**: Discover peers in LAN and initiate TCP connections
 
 #### 4.2.1 DiscoveryService.java
 
@@ -346,7 +344,7 @@ private void handleMessage(String message, InetAddress address) {
 
 #### 4.2.2 PeerRegistry.java
 
-**Purpose**: Maintain danh sách active peers
+**Purpose**: Maintain list of active peers
 
 **API:**
 ```java
@@ -383,7 +381,7 @@ registry.addListener(new PeerRegistryListener() {
 
 ### 4.3 Control Module
 
-**Purpose**: Điều phối toàn bộ file transfer flow
+**Purpose**: Orchestrate the entire file transfer flow
 
 #### 4.3.1 Protocol Messages
 
@@ -517,25 +515,25 @@ if (manifestStore.isFileComplete(fileHash)) {
 
 #### 4.3.3 Piece Scheduling Strategies
 
-**Sequential Mode** (cho streaming):
+**Sequential Mode** (for streaming):
 ```java
 scheduler.setScheduleMode(fileHash, ScheduleMode.SEQUENTIAL);
 List<Integer> pieces = scheduler.getNextPieces(fileHash, 10);
 // Result: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-**Rarest-First Mode** (cho swarm):
+**Rarest-First Mode** (for swarm):
 ```java
 scheduler.setScheduleMode(fileHash, ScheduleMode.RAREST_FIRST);
 List<Integer> pieces = scheduler.getNextPieces(fileHash, 10);
-// Result: [42, 7, 88, 15, ...] (theo độ hiếm)
+// Result: [42, 7, 88, 15, ...] (ordered by rarity)
 ```
 
 ---
 
 ### 4.4 Data Module
 
-**Purpose**: High-performance data transfer với UDP/TCP
+**Purpose**: High-performance data transfer with UDP/TCP
 
 #### 4.4.1 UDP Packet Format
 
@@ -553,7 +551,7 @@ List<Integer> pieces = scheduler.getNextPieces(fileHash, 10);
 │ Payload (≤1400 bytes)                           │
 │  └─ Actual piece data                           │
 └─────────────────────────────────────────────────┘
-Total: ≤1420 bytes (fits trong MTU 1500)
+Total: ≤1420 bytes (fits in MTU 1500)
 ```
 
 #### 4.4.2 Sliding Window Implementation
@@ -571,7 +569,7 @@ public class SlidingWindowSender {
         List<byte[]> sequences = splitIntoSequences(piece);
         
         while (base < sequences.size()) {
-            // Send packets trong window
+            // Send packets in window
             while (nextSeqNum < base + WINDOW_SIZE && 
                    nextSeqNum < sequences.size()) {
                 
@@ -688,7 +686,7 @@ socket.send(packet);
 
 ### 5.1 NDJSON Format
 
-**Định nghĩa**: Newline Delimited JSON - Mỗi message là 1 JSON object kết thúc bằng `\n`
+**Definition**: Newline Delimited JSON - Each message is a JSON object ending with `\n`
 
 **Example:**
 ```
@@ -698,9 +696,9 @@ socket.send(packet);
 ```
 
 **Advantages:**
-- ✅ Simple parsing (đọc đến `\n`)
+- ✅ Simple parsing (read until `\n`)
 - ✅ Streaming friendly
-- ✅ Self-delimited (không cần length prefix)
+- ✅ Self-delimited (no length prefix needed)
 - ✅ Human readable (easy debugging)
 
 **Implementation:**
@@ -831,40 +829,40 @@ Sender                    Receiver
 
 ### 6.1 Controller APIs
 
-#### For Data Plane (Người C)
+#### For Data Plane (Member C)
 
 ```java
 /**
- * Gửi piece qua Data Plane
+ * Send piece via Data Plane
  */
 public void sendPiece(String fileHash, int pieceId, Peer peer);
 
 /**
- * Yêu cầu retransmit sequences
+ * Request retransmit sequences
  */
 public void retransmitSeq(String fileHash, int pieceId, List<Integer> seqList);
 
 /**
- * Hủy transfer
+ * Cancel transfer
  */
 public void cancelTransfer(String fileHash);
 
 /**
- * Fallback sang TCP
+ * Fallback to TCP
  */
 public void fallbackTcp(String fileHash, int pieceId, Peer peer);
 ```
 
-#### Callbacks từ Data Plane
+#### Callbacks from Data Plane
 
 ```java
 /**
- * Piece hoàn thành
+ * Piece completed
  */
 public void onPieceDone(String fileHash, int pieceId);
 
 /**
- * Loss rate cao
+ * High loss rate
  */
 public void onLossAlert(String fileHash, int pieceId, double lossRate);
 
@@ -1176,7 +1174,7 @@ java -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -jar app.jar
 
 ### 10.1 Discovery Issues
 
-**Problem**: Peers không thấy nhau
+**Problem**: Peers cannot discover each other
 
 **Diagnosis:**
 ```bash
@@ -1200,8 +1198,8 @@ discovery:
 
 **Diagnosis:**
 - Check network quality
-- Monitor với Wireshark
-- Check logs cho retransmit count
+- Monitor with Wireshark
+- Check logs for retransmit count
 
 **Solution:**
 ```yaml
@@ -1236,40 +1234,39 @@ data:
 
 ## 11. FAQ
 
-**Q: Tại sao dùng NDJSON thay vì length-prefixed?**
+**Q: Why use NDJSON instead of length-prefixed format?**
 
-A: NDJSON đơn giản hơn, dễ debug, và streaming-friendly. Length-prefixed cần biết length trước, phức tạp hơn khi implement.
+A: NDJSON is simpler, easier to debug, and streaming-friendly. Length-prefixed requires knowing the length beforehand, which is more complex to implement.
 
-**Q: UDP window size 64 có phù hợp?**
+**Q: Is UDP window size 64 appropriate?**
 
-A: Phụ thuộc mạng. LAN tốt: 64-128. WiFi: 32-64. Có thể tune theo bandwidth-delay product.
+A: It depends on the network. Good LAN: 64-128. WiFi: 32-64. Can be tuned according to bandwidth-delay product.
 
-**Q: Tại sao cần TCP fallback?**
+**Q: Why is TCP fallback needed?**
 
-A: UDP không đảm bảo delivery. Khi loss >30%, retransmit UDP không hiệu quả. TCP fallback đảm bảo reliability.
+A: UDP doesn't guarantee delivery. When loss >30%, UDP retransmit is inefficient. TCP fallback ensures reliability.
 
-**Q: Resume có tốn overhead không?**
+**Q: Does resume have overhead?**
 
-A: Minimal. Chỉ save BitSet mỗi khi piece done. Load instant khi restart.
+A: Minimal. Only saves BitSet when piece is done. Load is instant when restarting.
 
-**Q: Có support NAT traversal không?**
+**Q: Is NAT traversal supported?**
 
-A: Chưa. Hiện tại chỉ LAN. Future: STUN/TURN.
+A: Not yet. Currently LAN only. Future: STUN/TURN.
 
-**Q: Có encrypt không?**
+**Q: Is encryption supported?**
 
-A: Chưa. Future: TLS cho TCP, DTLS cho UDP.
+A: Not yet. Future: TLS for TCP, DTLS for UDP.
 
 ---
 
 ## 📞 Support
 
-Nếu gặp vấn đề, check:
-1. Logs trong `logs/p2p.log`
-2. GitHub Issues
-3. Email: your.email@example.com
+If you encounter issues, check:
+1. Logs in `logs/p2p.log`
+2. GitHub Issues: https://github.com/tvan16/assignment-network-project/issues
+3. Email: thevan@ptit.edu.vn
 
 ---
 
 **Happy Coding! 🚀**
-
