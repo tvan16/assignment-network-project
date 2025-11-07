@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RequestPieces",
+  "description": "Message to request specific file pieces from a peer",
+  "type": "object",
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "const": "request_pieces"
+    },
+    "peer_id": {
+      "type": "string",
+      "description": "ID of the requesting peer"
+    },
+    "file_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the file",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "pieces": {
+      "type": "array",
+      "description": "Array of piece indices being requested",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp of the request"
+    }
+  },
+  "required": [
+    "message_type",
+    "peer_id",
+    "file_hash",
+    "pieces",
+    "timestamp"
+  ],
+  "additionalProperties": false
+}
+

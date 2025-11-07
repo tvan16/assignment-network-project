@@ -1,0 +1,9 @@
+rootProject.name = 'p2p-file-sharing'
+
+include 'common'
+include 'discovery'
+include 'data-api'
+include 'data'
+include 'control'
+include 'cli'
+

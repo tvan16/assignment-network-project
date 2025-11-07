@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OfferFile",
+  "description": "Message to announce file availability to peers",
+  "type": "object",
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "const": "offer_file"
+    },
+    "peer_id": {
+      "type": "string",
+      "description": "ID of the peer offering the file"
+    },
+    "file_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the complete file",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "file_name": {
+      "type": "string",
+      "description": "Original file name"
+    },
+    "file_size": {
+      "type": "integer",
+      "description": "Total file size in bytes",
+      "minimum": 0
+    },
+    "piece_size": {
+      "type": "integer",
+      "description": "Size of each piece in bytes",
+      "minimum": 1
+    },
+    "piece_count": {
+      "type": "integer",
+      "description": "Total number of pieces",
+      "minimum": 1
+    },
+    "piece_hashes": {
+      "type": "array",
+      "description": "Array of SHA-256 hashes for each piece",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp when file was offered"
+    }
+  },
+  "required": [
+    "message_type",
+    "peer_id",
+    "file_hash",
+    "file_name",
+    "file_size",
+    "piece_size",
+    "piece_count",
+    "piece_hashes",
+    "timestamp"
+  ],
+  "additionalProperties": false
+}
+

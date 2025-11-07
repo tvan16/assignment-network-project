@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Have",
+  "description": "Message to announce that a peer has certain pieces",
+  "type": "object",
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "const": "have"
+    },
+    "peer_id": {
+      "type": "string",
+      "description": "ID of the peer that has the pieces"
+    },
+    "file_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the file",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "pieces": {
+      "type": "array",
+      "description": "Array of piece indices that the peer has",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "uniqueItems": true
+    },
+    "bitfield": {
+      "type": "string",
+      "description": "Base64-encoded bitfield representing available pieces (alternative to pieces array)"
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp of the message"
+    }
+  },
+  "required": [
+    "message_type",
+    "peer_id",
+    "file_hash",
+    "timestamp"
+  ],
+  "oneOf": [
+    {
+      "required": ["pieces"]
+    },
+    {
+      "required": ["bitfield"]
+    }
+  ],
+  "additionalProperties": false
+}
+

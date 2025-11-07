@@ -1,0 +1,66 @@
+peer:
+  # Unique identifier for this peer
+  id: "peer-001"
+  # Display name for this peer
+  name: "MyPeer"
+  # Port for peer communication
+  port: 8080
+
+discovery:
+  # Enable/disable peer discovery
+  enabled: true
+  # Discovery service port
+  port: 9090
+  # Multicast address for peer discovery
+  multicast_address: "239.255.0.1"
+  # Announcement interval in seconds
+  announce_interval: 30
+  # Peer timeout in seconds
+  peer_timeout: 90
+
+data:
+  # UDP port for data transfer
+  udp_port: 7070
+  # TCP port for fallback transfers
+  tcp_port: 7071
+  # Size of each file piece in bytes (256KB)
+  piece_size: 262144
+  # Maximum concurrent uploads
+  max_uploads: 5
+  # Maximum concurrent downloads
+  max_downloads: 3
+  # Connection timeout in milliseconds
+  connection_timeout: 5000
+  # Data transfer timeout in milliseconds
+  transfer_timeout: 30000
+
+storage:
+  # Directory for downloaded files
+  download_dir: "./downloads"
+  # Directory for shared files
+  shared_dir: "./shared"
+  # Directory for temporary files
+  temp_dir: "./temp"
+  # Maximum cache size in MB
+  cache_size: 1024
+
+control:
+  # Control protocol port (TCP NDJSON)
+  port: 7000
+  # Maximum message size in bytes
+  max_message_size: 65536
+  # Keep-alive interval in seconds
+  keepalive_interval: 15
+  # Request timeout in seconds
+  request_timeout: 10
+
+logging:
+  # Log level: TRACE, DEBUG, INFO, WARN, ERROR
+  level: INFO
+  # Log file path
+  file: "./logs/p2p.log"
+  # Maximum log file size in MB
+  max_size: 10
+  # Maximum number of log files to keep
+  max_files: 5
+

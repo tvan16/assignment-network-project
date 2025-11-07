@@ -1,0 +1,99 @@
+plugins {
+    id 'java'
+}
+
+group = 'vn.ptit.p2p'
+version = '1.0.0'
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+    
+    dependencies {
+        // Common dependencies for all modules
+        implementation 'com.google.code.gson:gson:2.10.1'
+        implementation 'org.slf4j:slf4j-api:2.0.9'
+        implementation 'ch.qos.logback:logback-classic:1.4.11'
+        
+        // Testing dependencies
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    }
+    
+    test {
+        useJUnitPlatform()
+    }
+}
+
+project(':common') {
+    dependencies {
+        implementation 'org.yaml:snakeyaml:2.2'
+    }
+}
+
+project(':discovery') {
+    dependencies {
+        implementation project(':common')
+    }
+}
+
+project(':data-api') {
+    dependencies {
+        implementation project(':common')
+    }
+}
+
+project(':data') {
+    dependencies {
+        implementation project(':common')
+        implementation project(':data-api')
+        implementation 'io.netty:netty-all:4.1.100.Final'
+    }
+}
+
+project(':control') {
+    dependencies {
+        implementation project(':common')
+        implementation project(':discovery')
+        implementation project(':data-api')
+        implementation 'io.netty:netty-all:4.1.100.Final'
+    }
+}
+
+project(':cli') {
+    dependencies {
+        implementation project(':common')
+        implementation project(':discovery')
+        implementation project(':data')
+        implementation project(':control')
+        implementation 'info.picocli:picocli:4.7.5'
+    }
+    
+    task run(type: JavaExec) {
+        classpath = sourceSets.main.runtimeClasspath
+        mainClass = 'vn.ptit.p2p.cli.Main'
+        
+        if (project.hasProperty('args')) {
+            args project.args.split()
+        }
+    }
+    
+    jar {
+        manifest {
+            attributes 'Main-Class': 'vn.ptit.p2p.cli.Main'
+        }
+        from {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+

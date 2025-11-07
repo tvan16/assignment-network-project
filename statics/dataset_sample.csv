@@ -1,0 +1,7 @@
+file_hash,file_name,file_size,piece_count,upload_date,peer_count
+a3f5c8d9e2b1f4a6c8d9e2b1f4a6c8d9,document.pdf,2048576,8,2024-11-01T10:30:00,5
+b7e4a1c3f9d2e5b8a1c3f9d2e5b8a1c3,image.jpg,524288,2,2024-11-02T14:15:00,3
+c2d6f8b4e7a3c9d6f8b4e7a3c9d6f8b4,video.mp4,10485760,40,2024-11-03T09:45:00,12
+d9a5c1e8f3b2d4a5c1e8f3b2d4a5c1e8,music.mp3,3145728,12,2024-11-04T16:20:00,7
+e4b8d2f6a9c3e7b8d2f6a9c3e7b8d2f6,archive.zip,5242880,20,2024-11-05T11:00:00,9
+

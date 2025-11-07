@@ -1,0 +1,166 @@
+# ============================================
+# DOCUMENTATION FILES
+# ============================================
+# Only keep README.md and INSTRUCTION.md
+# Ignore all other .md files
+*.md
+!README.md
+!INSTRUCTION.md
+
+# ============================================
+# IDE & EDITOR
+# ============================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# ============================================
+# GRADLE BUILD
+# ============================================
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ============================================
+# JAVA COMPILED FILES
+# ============================================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# ============================================
+# APPLICATION DATA
+# ============================================
+# Config file (keep only example)
+application.yml
+!application.example.yml
+
+# Runtime directories
+downloads/
+shared/
+temp/
+logs/
+*.log
+
+# Resume states
+*.resume
+
+# ============================================
+# OPERATING SYSTEM
+# ============================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# TEMPORARY FILES
+# ============================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.#*
+\#*#
+
+# ============================================
+# BACKUP FILES
+# ============================================
+*.bak
+*.backup
+*.old
+*.orig
+
+# ============================================
+# TEST & COVERAGE
+# ============================================
+test-output/
+*.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# ============================================
+# SECURITY & SENSITIVE DATA
+# ============================================
+# Never commit sensitive data
+*.key
+*.pem
+*.p12
+*.jks
+secrets/
+credentials/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# ============================================
+# PROJECT SPECIFIC
+# ============================================
+# Keep only main docs, ignore working docs
+HƯỚNG_DẪN_HOÀN_CHỈNH.md
+NGƯỜI_A_CẦN_SỬA.md
+NGƯỜI_B_CHECKLIST.md
+NGƯỜI_B_CHI_TIẾT.md
+NGƯỜI_C_CẦN_SỬA.md
+SETUP_INTELLIJ.md
+
+# Dataset samples (if large)
+# Uncomment if needed:
+# statics/dataset_sample.csv
+
+# ============================================
+# GIT
+# ============================================
+*.patch
+*.diff
+.git-rewrite/
+

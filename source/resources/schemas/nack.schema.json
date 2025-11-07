@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Nack",
+  "description": "Negative acknowledgment message for failed requests",
+  "type": "object",
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "const": "nack"
+    },
+    "peer_id": {
+      "type": "string",
+      "description": "ID of the peer sending the nack"
+    },
+    "request_type": {
+      "type": "string",
+      "description": "Type of request that failed",
+      "enum": ["offer_file", "request_pieces", "have", "ping"]
+    },
+    "file_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of the file (if applicable)",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for the negative acknowledgment",
+      "enum": [
+        "file_not_found",
+        "piece_not_available",
+        "busy",
+        "invalid_request",
+        "timeout",
+        "internal_error"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message"
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp of the nack"
+    }
+  },
+  "required": [
+    "message_type",
+    "peer_id",
+    "request_type",
+    "reason",
+    "timestamp"
+  ],
+  "additionalProperties": false
+}
+

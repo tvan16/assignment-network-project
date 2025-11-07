@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PingPong",
+  "description": "Keep-alive message between peers",
+  "type": "object",
+  "properties": {
+    "message_type": {
+      "type": "string",
+      "enum": ["ping", "pong"]
+    },
+    "peer_id": {
+      "type": "string",
+      "description": "ID of the peer sending the message"
+    },
+    "timestamp": {
+      "type": "integer",
+      "description": "Unix timestamp of the message"
+    },
+    "sequence": {
+      "type": "integer",
+      "description": "Sequence number for matching ping/pong pairs",
+      "minimum": 0
+    },
+    "stats": {
+      "type": "object",
+      "description": "Optional peer statistics",
+      "properties": {
+        "uptime": {
+          "type": "integer",
+          "description": "Peer uptime in seconds"
+        },
+        "active_uploads": {
+          "type": "integer",
+          "description": "Number of active uploads"
+        },
+        "active_downloads": {
+          "type": "integer",
+          "description": "Number of active downloads"
+        },
+        "shared_files": {
+          "type": "integer",
+          "description": "Number of shared files"
+        },
+        "total_uploaded": {
+          "type": "integer",
+          "description": "Total bytes uploaded"
+        },
+        "total_downloaded": {
+          "type": "integer",
+          "description": "Total bytes downloaded"
+        }
+      }
+    }
+  },
+  "required": [
+    "message_type",
+    "peer_id",
+    "timestamp",
+    "sequence"
+  ],
+  "additionalProperties": false
+}
+
